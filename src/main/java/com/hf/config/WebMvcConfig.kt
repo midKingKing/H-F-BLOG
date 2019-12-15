@@ -1,6 +1,8 @@
 package com.hf.config
 
-import com.hf.interceptors.UserDetailInterceptor
+import com.hf.helper.SessionHelper
+import com.hf.interceptors.SessionInterceptor
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.servlet.ServletRegistrationBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -12,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @Configuration
 @EnableWebMvc
-open class WebMvcConfig : WebMvcConfigurerAdapter() {
+open class WebMvcConfig(@Autowired private val sessionHelper: SessionHelper) : WebMvcConfigurerAdapter() {
     override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
         super.addResourceHandlers(registry.apply {
             addResourceHandler("/js/**").addResourceLocations("classpath:/static/js/")
@@ -25,12 +27,7 @@ open class WebMvcConfig : WebMvcConfigurerAdapter() {
     }
 
     override fun addInterceptors(registry: InterceptorRegistry) {
-        super.addInterceptors(registry.apply { addInterceptor(userDetailInterceptor()).addPathPatterns("/**") })
-    }
-
-    @Bean
-    open fun userDetailInterceptor(): UserDetailInterceptor {
-        return UserDetailInterceptor()
+        super.addInterceptors(registry.apply { addInterceptor(SessionInterceptor(sessionHelper)).addPathPatterns("/**") })
     }
 
     @Bean

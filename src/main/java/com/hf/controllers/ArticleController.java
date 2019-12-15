@@ -1,7 +1,6 @@
 package com.hf.controllers;
 
 import com.hf.dto.Article;
-import com.hf.pojo.ResponseData;
 import com.hf.service.IArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

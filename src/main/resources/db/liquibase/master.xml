@@ -13,5 +13,6 @@
     <include file="classpath:db/liquibase/sqlFile/article.sql" relativeToChangelogFile="false"/>
     <!--增加article表字段-->
     <include file="classpath:db/liquibase/changelog/2018-01-12-alterTable.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:db/liquibase/changelog/2019-12-15-addTable.xml" relativeToChangelogFile="false"/>
 
 </databaseChangeLog>
