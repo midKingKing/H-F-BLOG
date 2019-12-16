@@ -14,4 +14,20 @@
 
         <dropColumn tableName="session" columnName="username"/>
     </changeSet>
+
+    <changeSet id="201912162212" author="JIMI">
+
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="session"/>
+        </preConditions>
+
+        <addColumn tableName="session">
+            <column name="host" type="varchar(30)" remarks="host" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+            <column name="attr" type="varchar(4096)" remarks="属性" defaultValue="{}">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

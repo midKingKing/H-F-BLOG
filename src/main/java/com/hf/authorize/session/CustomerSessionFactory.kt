@@ -11,7 +11,7 @@ class CustomerSessionFactory() : SessionFactory {
             uuid = UUID.randomUUID().toString().replace("-", "")
             createTime = System.currentTimeMillis()
             expireTime = createTime!! + 1800L * 1000
-            disable = false
+            host = initData?.host
         })
 
 }
