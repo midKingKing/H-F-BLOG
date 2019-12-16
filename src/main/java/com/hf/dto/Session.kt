@@ -10,5 +10,6 @@ class Session {
     var uuid: String? = null
     var createTime: Long? = null
     var expireTime: Long? = null
-    var disable: Boolean = true
+    var host: String? = null
+    var attr: String? = null
 }
