@@ -26,7 +26,7 @@ class CustomerSessionDao(private val sessionMapper: SessionMapper) : SessionDAO 
     }
 
     override fun readSession(sessionId: Serializable?): Session {
-        return sessionMapper.selectByExample(Example(com.hf.dto.Session::class.java).createCriteria().andCondition("uuid = $sessionId")).map { CustomerSession(it) }.first()
+        return CustomerSession(sessionMapper.selectByPrimaryKey(sessionId))
     }
 
     override fun delete(session: Session?) {

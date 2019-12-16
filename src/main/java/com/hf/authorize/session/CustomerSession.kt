@@ -2,11 +2,12 @@ package com.hf.authorize.session
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.apache.shiro.session.Session
+import org.apache.shiro.session.mgt.ValidatingSession
 import java.io.Serializable
-import java.util.Date
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
-class CustomerSession(private val sessionDto: com.hf.dto.Session) : Session {
+class CustomerSession(private val sessionDto: com.hf.dto.Session) : ValidatingSession {
     companion object {
         fun convertFromShiroSession(session: Session): com.hf.dto.Session = com.hf.dto.Session().apply {
             uuid = session.id as String
@@ -57,4 +58,13 @@ class CustomerSession(private val sessionDto: com.hf.dto.Session) : Session {
     }
 
     override fun getStartTimestamp(): Date = Date(sessionDto.createTime ?: -1L)
+
+    override fun isValid(): Boolean {
+        return sessionDto.expireTime > System.currentTimeMillis()
+    }
+
+    override fun validate() {
+
+    }
+
 }
