@@ -59,7 +59,7 @@ public class LoginController {
         HttpSession session = request.getSession(false);
         if (session != null) {
             User user = (User) session.getAttribute("user");
-            if (user.getUsername() == null) {//当session中的user为空,跳转到login视图
+            if (user == null || user.getUsername() == null) {//当session中的user为空,跳转到login视图
                 return VIEW_LOGIN;
             } else if (request.getParameter("logout") != null) {//当url为登出时,则清除当前subject的信息,跳转到login视图
                 Subject subject = SecurityUtils.getSubject();

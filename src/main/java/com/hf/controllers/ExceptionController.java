@@ -20,22 +20,12 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class ExceptionController {
 
-    public static final String X_REQUESTED_WIDTH = "X-Requested-With";
-    public static final String XML_HTTP_REQUEST = "XMLHttpRequest";
+    private static final String X_REQUESTED_WIDTH = "X-Requested-With";
+    private static final String XML_HTTP_REQUEST = "XMLHttpRequest";
 
     protected final static Logger log = LoggerFactory.getLogger(ExceptionController.class);
 
-//    @ExceptionHandler(value = {IOException.class, RuntimeException.class})
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    @ResponseBody
-//    public ModelAndView handException(HttpServletRequest request,Exception ex){
-//        log.info("Exception " + ex.getMessage());
-//        ResponseData rs = new ResponseData(false);
-//        rs.setMessage(ex.getMessage());
-//        return new ModelAndView("500");
-//    }
-
-    @ExceptionHandler(value = { Exception.class })
+    @ExceptionHandler(value = {Exception.class})
     @ResponseBody
     public Object exceptionHandler(Exception exception, HttpServletRequest request) {
         String message = exception.getMessage();
@@ -53,7 +43,7 @@ public class ExceptionController {
 
     @ExceptionHandler(value = {NoHandlerFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ModelAndView noMapping(HttpServletRequest request,Exception ex) {
+    public ModelAndView noMapping(HttpServletRequest request, Exception ex) {
         log.info("404 not found:" + request.getContextPath(), ex);
         return new ModelAndView("404");
     }
@@ -62,13 +52,12 @@ public class ExceptionController {
     /**
      * 判断是否ajax请求.
      *
-     * @param request
-     *            HttpServletRequest
+     * @param request HttpServletRequest
      * @return 是否ajax请求.
      */
     public static boolean isAjaxRequest(HttpServletRequest request) {
         String xr = request.getHeader(X_REQUESTED_WIDTH);
-        return (xr != null && XML_HTTP_REQUEST.equalsIgnoreCase(xr));
+        return XML_HTTP_REQUEST.equalsIgnoreCase(xr);
     }
 
 }

@@ -15,6 +15,7 @@ class SessionInterceptor(private val sessionHelper: SessionHelper) : HandlerInte
                 if (this) SessionUtil.session.set(session) else throw HfExceptions.sessionExpiredException()
             }
         } ?: throw HfExceptions.sessionExpiredException()
+        return true
     }
 
     override fun afterCompletion(request: HttpServletRequest?, response: HttpServletResponse?, handler: Any?, ex: Exception?) {

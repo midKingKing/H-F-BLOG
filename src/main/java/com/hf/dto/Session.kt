@@ -8,8 +8,7 @@ class Session {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var uuid: String? = null
-    var username: String? = null
     var createTime: Long? = null
     var expireTime: Long? = null
-    var disable: Boolean? = null
+    var disable: Boolean = true
 }

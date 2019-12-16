@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component
-class SessionHelper @Autowired constructor (private val sessionMapper: SessionMapper) {
+class SessionHelper @Autowired constructor(private val sessionMapper: SessionMapper) {
     fun getBySessionId(sessionId: String): Session? = sessionMapper.selectByPrimaryKey(sessionId)
+
+    fun createSession(session: Session): Int = sessionMapper.insert(session)
 }

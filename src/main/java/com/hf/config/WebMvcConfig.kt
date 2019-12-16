@@ -27,7 +27,7 @@ open class WebMvcConfig(@Autowired private val sessionHelper: SessionHelper) : W
     }
 
     override fun addInterceptors(registry: InterceptorRegistry) {
-        super.addInterceptors(registry.apply { addInterceptor(SessionInterceptor(sessionHelper)).addPathPatterns("/**") })
+        //super.addInterceptors(registry.apply { addInterceptor(SessionInterceptor(sessionHelper)).addPathPatterns("/**") })
     }
 
     @Bean
