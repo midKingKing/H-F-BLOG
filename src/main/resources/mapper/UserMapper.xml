@@ -22,7 +22,7 @@
       SELECT
           u.*, r.*, m.*
       FROM
-          USER u
+          user u
       INNER JOIN user_role ur ON ur.uid = u.uid
       INNER JOIN role r ON r.rid = ur.rid
       INNER JOIN module_role mr ON mr.rid = r.rid
