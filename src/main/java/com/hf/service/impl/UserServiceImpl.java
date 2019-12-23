@@ -18,7 +18,6 @@ import java.util.List;
 @Transactional
 @Service
 public class UserServiceImpl extends BaseServiceImpl<User> implements IUserService{
-
     @Autowired
     private UserMapper userMapper;
     @Autowired
@@ -30,7 +29,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
     }
 
     @Override
-    public User loginByUsernameAndPasswordd(String username, String password) {
+    public User loginByUsernameAndPassword(String username, String password) {
         User loginUser = userMapper.selectOne(new User() {
             {
                 setUsername(username);

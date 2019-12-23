@@ -30,7 +30,7 @@ public class LoginController {
     public ModelAndView login(HttpServletRequest request, String username, String password) {
         ModelAndView modelAndView = new ModelAndView();
         try {
-            userService.loginByUsernameAndPasswordd(username, password);
+            userService.loginByUsernameAndPassword(username, password);
             modelAndView.setViewName("redirect:" + VIEW_INDEX + ".html");
         } catch (Exception e) {
             e.printStackTrace();
