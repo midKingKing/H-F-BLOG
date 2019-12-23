@@ -2,6 +2,7 @@ package com.hf.config
 
 import com.hf.helper.SessionHelper
 import com.hf.interceptors.SessionInterceptor
+import com.hf.interceptors.SimpleAuthInterceptor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.servlet.ServletRegistrationBean
 import org.springframework.context.annotation.Bean
@@ -27,7 +28,11 @@ open class WebMvcConfig(@Autowired private val sessionHelper: SessionHelper) : W
     }
 
     override fun addInterceptors(registry: InterceptorRegistry) {
-        super.addInterceptors(registry.apply { addInterceptor(SessionInterceptor(sessionHelper)).addPathPatterns("/**") })
+        super.addInterceptors(registry.apply {
+            //make sure the order from session is before then auth
+            addInterceptor(SessionInterceptor(sessionHelper)).addPathPatterns("/**")
+            addInterceptor(SimpleAuthInterceptor())
+        })
     }
 
     @Bean

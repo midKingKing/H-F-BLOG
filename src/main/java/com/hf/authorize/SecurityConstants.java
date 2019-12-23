@@ -8,6 +8,7 @@ package com.hf.authorize;
  **/
 public interface SecurityConstants {
 
+    Long SESSION_KEEP_ALIVE_TIME = 1800 * 1000L;
 
     /**
      * 提供商的ID

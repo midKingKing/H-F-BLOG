@@ -1,6 +1,8 @@
 package com.hf.controllers;
 
 import com.hf.dto.User;
+import com.hf.service.IUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,6 +20,9 @@ public class LoginController {
     private static final String VIEW_LOGIN = "/login";
     private static final String VIEW_INDEX = "/index";
 
+    @Autowired
+    private IUserService userService;
+
     /**
      * 登录操作(表单登录为post请求)
      */
@@ -25,7 +30,7 @@ public class LoginController {
     public ModelAndView login(HttpServletRequest request, String username, String password) {
         ModelAndView modelAndView = new ModelAndView();
         try {
-
+            userService.loginByUsernameAndPasswordd(username, password);
             modelAndView.setViewName("redirect:" + VIEW_INDEX + ".html");
         } catch (Exception e) {
             e.printStackTrace();

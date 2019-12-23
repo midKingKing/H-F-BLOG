@@ -7,4 +7,6 @@ import com.hf.dto.User;
  */
 public interface IUserService extends IBaseService<User>{
     User findByUserName(String username);
+
+    User loginByUsernameAndPasswordd(String username, String password);
 }

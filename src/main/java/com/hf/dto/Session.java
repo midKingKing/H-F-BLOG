@@ -10,10 +10,19 @@ public class Session {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String uuid;
+    private String username;
     private Long createTime;
     private Long expireTime;
     private String host;
     private String attr;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public String getUuid() {
         return uuid;
