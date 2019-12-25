@@ -55,7 +55,7 @@ public class ExceptionController {
      * @param request HttpServletRequest
      * @return 是否ajax请求.
      */
-    public static boolean isAjaxRequest(HttpServletRequest request) {
+    private static boolean isAjaxRequest(HttpServletRequest request) {
         String xr = request.getHeader(X_REQUESTED_WIDTH);
         return XML_HTTP_REQUEST.equalsIgnoreCase(xr);
     }

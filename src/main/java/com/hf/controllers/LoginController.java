@@ -2,6 +2,8 @@ package com.hf.controllers;
 
 import com.hf.dto.User;
 import com.hf.service.IUserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +25,8 @@ public class LoginController {
     @Autowired
     private IUserService userService;
 
+    private static final Logger log = LoggerFactory.getLogger(LoginController.class);
+
     /**
      * 登录操作(表单登录为post请求)
      */
@@ -33,7 +37,7 @@ public class LoginController {
             userService.loginByUsernameAndPassword(username, password);
             modelAndView.setViewName("redirect:" + VIEW_INDEX + ".html");
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
             modelAndView.setViewName(VIEW_LOGIN);
             modelAndView.addObject("message", "账号或密码错误");
         }
