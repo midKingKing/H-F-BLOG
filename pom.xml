@@ -130,21 +130,6 @@
 			<groupId>org.springframework.social</groupId>
 			<artifactId>spring-social-web</artifactId>
 		</dependency>
-
-        <!--微博-->
-		<!--<dependency>-->
-			<!--<groupId>net.gplatform</groupId>-->
-			<!--<artifactId>spring-social-weibo</artifactId>-->
-			<!--<version>1.0.2</version>-->
-		<!--</dependency>-->
-
-		<!--热部署插件-->
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-devtools</artifactId>-->
-<!--			<scope>provided</scope>-->
-<!--			<optional>true</optional>-->
-<!--		</dependency>-->
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib-jdk8</artifactId>

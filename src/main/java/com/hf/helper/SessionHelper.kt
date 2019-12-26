@@ -17,8 +17,9 @@ class SessionHelper @Autowired constructor(private val sessionMapper: SessionMap
         sessionMapper.insert(Session().apply {
             uuid = UUID.randomUUID().toString().replace("-", "")
             username = user.username
-            createTime = System.currentTimeMillis()
-            expireTime = createTime + SecurityConstants.SESSION_KEEP_ALIVE_TIME
+            expireTime = System.currentTimeMillis().also {
+                this.createTime = it
+            } + SecurityConstants.SESSION_KEEP_ALIVE_TIME
             SessionUtil.session.set(this)
         })
 
