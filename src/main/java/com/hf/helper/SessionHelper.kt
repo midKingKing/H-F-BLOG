@@ -1,6 +1,6 @@
 package com.hf.helper
 
-import com.hf.authorize.SecurityConstants
+import com.hf.authorize.SESSION_KEEP_ALIVE_TIME
 import com.hf.dao.SessionMapper
 import com.hf.dto.Session
 import com.hf.dto.User
@@ -19,7 +19,7 @@ class SessionHelper @Autowired constructor(private val sessionMapper: SessionMap
             username = user.username
             expireTime = System.currentTimeMillis().also {
                 this.createTime = it
-            } + SecurityConstants.SESSION_KEEP_ALIVE_TIME
+            } + SESSION_KEEP_ALIVE_TIME
             SessionUtil.session.set(this)
         })
 
