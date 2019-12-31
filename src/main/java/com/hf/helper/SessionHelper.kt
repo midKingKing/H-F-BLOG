@@ -8,6 +8,7 @@ import com.hf.util.SessionUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.util.UUID
+import javax.servlet.http.Cookie
 
 @Component
 class SessionHelper @Autowired constructor(private val sessionMapper: SessionMapper) {
@@ -16,11 +17,17 @@ class SessionHelper @Autowired constructor(private val sessionMapper: SessionMap
     fun createSession(user: User): Int =
         sessionMapper.insert(Session().apply {
             uuid = UUID.randomUUID().toString().replace("-", "")
+            host = ""
+            attr = ""
             username = user.username
             expireTime = System.currentTimeMillis().also {
                 this.createTime = it
             } + SESSION_KEEP_ALIVE_TIME
             SessionUtil.session.set(this)
+            SessionUtil.response.get()?.addCookie(Cookie("hf-session", uuid).apply {
+                isHttpOnly = true
+                expireTime = SESSION_KEEP_ALIVE_TIME
+            })
         })
 
 

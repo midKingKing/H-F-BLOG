@@ -11,7 +11,7 @@
         <li class="hf-item active" style="width: 100px">
             <a href="#home" data-toggle="tab">首页</a>
         </li>
-        <li class="hf-item" th:if="${session.user.username}">
+        <li class="hf-item" th:if="${user.username}">
             <a href="#publish" data-toggle="tab">发布</a>
         </li>
         <li class="hf-item">
@@ -23,9 +23,9 @@
         <span class="li-bottom"></span>
     </ul>
        <div class="hf-user">
-        <div th:if="${session.user.username}" class="dropdown">
+        <div th:if="${user.username}" class="dropdown">
             <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
-                <span th:text="${session.user.username}"></span>
+                <span th:text="${user.username}"></span>
                 <i class="fa fa-caret-down" aria-hidden="true" style="margin-left: 10px;"></i>
             </a>
             <ul class="dropdown-menu" role="menu">
@@ -38,7 +38,7 @@
             </ul>
 
         </div>
-        <div th:unless="${session.user.username}">
+        <div th:unless="${user.username}">
             <a id="login" th:href="@{login.html}">登录</a>
             <a id="register" href="javascript:void(0)" style="margin-left: 20px">注册</a>
         </div>
@@ -51,7 +51,7 @@
            <div role="tabpanel" class="tab-pane active"  id="home">
                <div th:replace="home:: home"></div>
            </div>
-           <div role="tabpanel" th:if="${session.user.username}" class="tab-pane" id="publish">
+           <div role="tabpanel" th:if="${user.username}" class="tab-pane" id="publish">
                <div th:replace="publish:: publish"></div>
            </div>
            <div role="tabpanel" class="tab-pane" id="search">
@@ -76,7 +76,7 @@
    <footer th:replace="common/footer::footer"></footer>
    <script type="text/javascript" th:inline="javascript">
        /*<![CDATA[*/
-       var userName = [[${session.user.username}]];
+       var userName = [[${user.username}]];
        //index
        initImage();
       /* initImage2();*/

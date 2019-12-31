@@ -31,7 +31,7 @@ public class LoginController {
      * 登录操作(表单登录为post请求)
      */
     @RequestMapping(value = {"/login"}, method = RequestMethod.POST)
-    public ModelAndView login(HttpServletRequest request, String username, String password) {
+    public ModelAndView login(String username, String password) {
         ModelAndView modelAndView = new ModelAndView();
         try {
             userService.loginByUsernameAndPassword(username, password);

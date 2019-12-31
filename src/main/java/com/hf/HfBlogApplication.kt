@@ -7,7 +7,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy
 import org.springframework.transaction.annotation.EnableTransactionManagement
 
 @MapperScan(basePackages = ["com.hf.dao"]) //mapper扫描包路径
-@EnableTransactionManagement //启动事物注解
+@EnableTransactionManagement
 @EnableAspectJAutoProxy(exposeProxy = true) //暴露当前aop代理
 @SpringBootApplication
 open class HfblogApplication {
