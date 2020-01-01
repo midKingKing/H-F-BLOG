@@ -15,7 +15,7 @@ class SessionInterceptor(private val sessionHelper: SessionHelper) : HandlerInte
         request?.cookies?.toList()?.find { it.name == "hf-session" }?.let {
             val session = sessionHelper.getBySessionId(it.value)
             if (session != null) {
-                if (session.expireTime ?: 0 < System.currentTimeMillis()) {
+                if (session.expireTime ?: 0 > System.currentTimeMillis()) {
                     sessionHelper.touchSession(session)
                     SessionUtil.session.set(session)
                 } else {

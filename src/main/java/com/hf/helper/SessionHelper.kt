@@ -26,7 +26,7 @@ class SessionHelper @Autowired constructor(private val sessionMapper: SessionMap
             SessionUtil.session.set(this)
             SessionUtil.response.get()?.addCookie(Cookie("hf-session", uuid).apply {
                 isHttpOnly = true
-                expireTime = SESSION_KEEP_ALIVE_TIME
+                this.maxAge = SESSION_KEEP_ALIVE_TIME.toInt() * 48
             })
         })
 
