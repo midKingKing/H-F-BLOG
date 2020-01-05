@@ -7,6 +7,6 @@ class HfExceptions {
         @Throws(RuntimeException::class)
         fun sessionExpiredException() = RuntimeException("session expired")
         @Throws(RuntimeException::class)
-        fun usernameOrPasswordErrorException() = RuntimeException("username or passowrd error")
+        fun usernameOrPasswordErrorException() = RuntimeException("username or password error")
     }
 }

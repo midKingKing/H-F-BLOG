@@ -11,11 +11,12 @@ import org.springframework.web.servlet.DispatcherServlet
 import org.springframework.web.servlet.config.annotation.EnableWebMvc
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
+import javax.servlet.Servlet
 
 @Configuration
 @EnableWebMvc
-open class WebMvcConfig(@Autowired private val sessionHelper: SessionHelper) : WebMvcConfigurerAdapter() {
+open class WebMvcConfig(@Autowired private val sessionHelper: SessionHelper) : WebMvcConfigurer {
     override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
         super.addResourceHandlers(registry.apply {
             addResourceHandler("/js/**").addResourceLocations("classpath:/static/js/")
@@ -36,7 +37,7 @@ open class WebMvcConfig(@Autowired private val sessionHelper: SessionHelper) : W
     }
 
     @Bean
-    open fun dispatcherRegistration(dispatcherServlet: DispatcherServlet): ServletRegistrationBean {
+    open fun dispatcherRegistration(dispatcherServlet: DispatcherServlet): ServletRegistrationBean<out Servlet> {
         return ServletRegistrationBean(
             dispatcherServlet.apply { setThrowExceptionIfNoHandlerFound(true) }
         )

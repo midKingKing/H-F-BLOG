@@ -2,14 +2,15 @@ package com.hf.util
 
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.JsonNode
-import org.apache.log4j.Logger
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 import java.lang.reflect.Type
 
 object JsonConverter {
-    val log: Logger = Logger.getLogger(JsonConverter::class.java)
+    val log: Logger = LoggerFactory.getLogger(JsonConverter::class.java)
 
     @JvmStatic
     fun <T> serialize(obj: T?): String? {
