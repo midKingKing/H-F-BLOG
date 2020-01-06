@@ -1,7 +1,7 @@
 package com.hf.controllers;
 
 import com.hf.dto.Article;
-import com.hf.service.IArticleService;
+import com.hf.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 public class ArticleController {
 
     @Autowired
-    private IArticleService articleService;
+    private ArticleService articleService;
 
     @RequestMapping(value = {"/article/publish"},method = RequestMethod.POST)
     @ResponseBody

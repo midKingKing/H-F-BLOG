@@ -1,66 +1,66 @@
-package com.hf.service.impl
+package com.hf.service
 
 import com.github.pagehelper.PageHelper
-import com.hf.service.IBaseService
 import com.hf.util.MyMapper
+import com.hf.util.ProxySelf
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 
-abstract class BaseServiceImpl<T> : IBaseService<T> {
+abstract class BaseService<T> : ProxySelf<BaseService<T>> {
     @Autowired
     private var baseMapper: MyMapper<T>? = null
 
     @Transactional(propagation = Propagation.SUPPORTS)
-    override fun select(condition: T, pageNum: Int, pageSize: Int): List<T> {
+    open fun select(condition: T, pageNum: Int, pageSize: Int): List<T> {
         PageHelper.startPage<Any>(pageNum, pageSize)
         return baseMapper!!.select(condition)
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
-    override fun selectAll(): List<T> {
+    open fun selectAll(): List<T> {
         return baseMapper!!.selectAll()
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
-    override fun selectByPrimaryKey(record: T): T {
+    open fun selectByPrimaryKey(record: T): T {
         return baseMapper!!.selectByPrimaryKey(record)
     }
 
 
     @Transactional(rollbackFor = [Exception::class])
-    override fun insert(record: T): T {
+    open fun insert(record: T): T {
         baseMapper!!.insert(record)
         return record
     }
 
     @Transactional(rollbackFor = [Exception::class])
-    override fun insertSelective(record: T): T {
+    open fun insertSelective(record: T): T {
         baseMapper!!.insertSelective(record)
         return record
     }
 
     @Transactional(rollbackFor = [Exception::class])
-    override fun updateByPrimaryKey(record: T): T {
+    open fun updateByPrimaryKey(record: T): T {
         baseMapper!!.updateByPrimaryKey(record)
         return record
     }
 
     @Transactional(rollbackFor = [Exception::class])
-    override fun updateByPrimaryKeySelective(record: T): T {
+    open fun updateByPrimaryKeySelective(record: T): T {
         baseMapper!!.updateByPrimaryKeySelective(record)
         return record
     }
 
     @Transactional(rollbackFor = [Exception::class])
-    override fun deleteByPrimaryKey(record: T): Int {
+    open fun deleteByPrimaryKey(record: T): Int {
         return baseMapper!!.deleteByPrimaryKey(record)
     }
 
 
     @Transactional(rollbackFor = [Exception::class])
-    override fun batchDelete(list: List<T>): Int {
-        val self = self() as IBaseService<T>
+    open fun batchDelete(list: List<T>): Int {
+        val self = self() as BaseService<T>
         var c = 0
         for (t in list) {
             c += self.deleteByPrimaryKey(t)
@@ -69,7 +69,7 @@ abstract class BaseServiceImpl<T> : IBaseService<T> {
     }
 
     @Transactional(rollbackFor = [Exception::class])
-    override fun delete(record: T): Int {
+    open fun delete(record: T): Int {
         return baseMapper!!.delete(record)
     }
 }

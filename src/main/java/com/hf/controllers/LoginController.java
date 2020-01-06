@@ -1,7 +1,7 @@
 package com.hf.controllers;
 
 import com.hf.dto.User;
-import com.hf.service.IUserService;
+import com.hf.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class LoginController {
     private static final String VIEW_INDEX = "/index";
 
     @Autowired
-    private IUserService userService;
+    private UserService userService;
 
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 

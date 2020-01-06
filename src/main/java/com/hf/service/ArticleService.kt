@@ -1,7 +1,6 @@
-package com.hf.service.impl
+package com.hf.service
 
 import com.hf.dto.Article
-import com.hf.service.IArticleService
 import com.vladsch.flexmark.ext.tables.TablesExtension
 import com.vladsch.flexmark.html.HtmlRenderer
 import com.vladsch.flexmark.parser.Parser
@@ -12,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional
 
 @Transactional
 @Service
-open class ArticleServiceImpl : BaseServiceImpl<Article>(), IArticleService {
-    override fun markDown2html(article: Article): String {
+open class ArticleService : BaseService<Article>() {
+    fun markDown2html(article: Article): String {
         val options = MutableDataSet().apply {
             setFrom(ParserEmulationProfile.MARKDOWN)
             set(Parser.EXTENSIONS, listOf(TablesExtension.create()))
