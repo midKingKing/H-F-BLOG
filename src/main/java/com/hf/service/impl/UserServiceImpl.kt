@@ -6,8 +6,10 @@ import com.hf.helper.SessionHelper
 import com.hf.helper.VerificationHelper
 import com.hf.service.IUserService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
 
-class UserServiceImpl @Autowired constructor(
+@Service
+open class UserServiceImpl @Autowired constructor(
     private val userMapper: UserMapper,
     private val sessionHelper: SessionHelper
 ) : BaseServiceImpl<User>(), IUserService {
