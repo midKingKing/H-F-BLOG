@@ -12,5 +12,8 @@ class HfExceptions {
 
         @Throws(RuntimeException::class)
         fun invalidRoute() = RuntimeException("invalid route")
+
+        @Throws(RuntimeException::class)
+        fun unsupportedAppType() = RuntimeException("unsupported app type")
     }
 }
