@@ -3,13 +3,10 @@ package com.hf.controllers.advice
 import com.hf.pojo.ResponseData
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload
 import org.slf4j.LoggerFactory
-import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseBody
-import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.servlet.ModelAndView
-import org.springframework.web.servlet.NoHandlerFoundException
 import javax.servlet.http.HttpServletRequest
 
 @ControllerAdvice
@@ -20,13 +17,6 @@ class ExceptionAdvice {
         val message = exception.message
         log.error(message, exception)
         return if (isAjaxRequest(request) || ServletFileUpload.isMultipartContent(request)) ResponseData(false).apply { this.message = message } else ModelAndView("500").apply { addObject("message", message) }
-    }
-
-    @ExceptionHandler(value = [NoHandlerFoundException::class])
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    fun noMapping(request: HttpServletRequest, ex: Exception?): ModelAndView {
-        log.info("404 not found:" + request.contextPath, ex)
-        return ModelAndView("404")
     }
 
     companion object {

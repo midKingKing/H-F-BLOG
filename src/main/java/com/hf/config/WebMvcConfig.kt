@@ -4,7 +4,11 @@ import com.hf.helper.SessionHelper
 import com.hf.interceptors.SessionInterceptor
 import com.hf.interceptors.SimpleAuthInterceptor
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory
+import org.springframework.boot.web.server.ErrorPage
+import org.springframework.boot.web.server.WebServerFactoryCustomizer
 import org.springframework.boot.web.servlet.ServletRegistrationBean
+import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.DispatcherServlet
@@ -13,6 +17,8 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import javax.servlet.Servlet
+import org.springframework.http.HttpStatus
+
 
 @Configuration
 @EnableWebMvc
@@ -36,10 +42,11 @@ open class WebMvcConfig(@Autowired private val sessionHelper: SessionHelper) : W
         })
     }
 
+    //noneffective
     @Bean
-    open fun dispatcherRegistration(dispatcherServlet: DispatcherServlet): ServletRegistrationBean<out Servlet> {
-        return ServletRegistrationBean(
-            dispatcherServlet.apply { setThrowExceptionIfNoHandlerFound(true) }
-        )
+    open fun containerCustomizer(): WebServerFactoryCustomizer<TomcatServletWebServerFactory> {
+        return WebServerFactoryCustomizer {
+                factory -> factory.addErrorPages(ErrorPage(HttpStatus.NOT_FOUND, "/404.html"))
+        }
     }
 }

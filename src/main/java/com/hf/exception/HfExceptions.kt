@@ -6,7 +6,11 @@ class HfExceptions {
     companion object {
         @Throws(RuntimeException::class)
         fun sessionExpiredException() = RuntimeException("session expired")
+
         @Throws(RuntimeException::class)
         fun usernameOrPasswordErrorException() = RuntimeException("username or password error")
+
+        @Throws(RuntimeException::class)
+        fun invalidRoute() = RuntimeException("invalid route")
     }
 }
