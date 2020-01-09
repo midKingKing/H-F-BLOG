@@ -19,7 +19,9 @@ class SessionInterceptor(private val sessionHelper: SessionHelper) : HandlerInte
                     sessionHelper.touchSession(session)
                     SessionUtil.session.set(session)
                 } else {
-                    sessionHelper.deleteSession(session)
+                    session.uuid?.run {
+                        sessionHelper.deleteSession(this)
+                    }
                 }
             }
         }

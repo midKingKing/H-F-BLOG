@@ -31,7 +31,7 @@ class SessionHelper @Autowired constructor(private val sessionMapper: SessionMap
         })
 
 
-    fun deleteSession(session: Session): Int = sessionMapper.delete(session)
+    fun deleteSession(sessionId: String): Int = sessionMapper.deleteByPrimaryKey(sessionId)
 
     fun touchSession(session: Session): Int {
         session.expireTime = System.currentTimeMillis() + 1800 * 1000

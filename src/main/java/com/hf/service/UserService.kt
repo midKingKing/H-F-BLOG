@@ -20,4 +20,6 @@ open class UserService constructor(
                 VerificationHelper.verify(password, this.password ?: "")
                 sessionHelper.createSession(this)
             }
+
+    open fun logoutBySessionId(sessionId: String) = sessionHelper.deleteSession(sessionId)
 }

@@ -93,6 +93,13 @@
 			<artifactId>commons-pool2</artifactId>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>3.2.0</version>
+		</dependency>
+
 		<!--markdown to html-->
 		<dependency>
 			<groupId>com.vladsch.flexmark</groupId>
