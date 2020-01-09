@@ -1,8 +1,8 @@
 package com.hf.controllers.advice
 
+import com.hf.logging.Logging
 import com.hf.pojo.ResponseData
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload
-import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseBody
@@ -19,10 +19,9 @@ class ExceptionAdvice {
         return if (isAjaxRequest(request) || ServletFileUpload.isMultipartContent(request)) ResponseData(false).apply { this.message = message } else ModelAndView("500").apply { addObject("message", message) }
     }
 
-    companion object {
+    companion object: Logging() {
         private const val X_REQUESTED_WIDTH = "X-Requested-With"
         private const val XML_HTTP_REQUEST = "XMLHttpRequest"
-        private val log = LoggerFactory.getLogger(ExceptionAdvice::class.java)
 
         private fun isAjaxRequest(request: HttpServletRequest): Boolean {
             val xr = request.getHeader(X_REQUESTED_WIDTH)
