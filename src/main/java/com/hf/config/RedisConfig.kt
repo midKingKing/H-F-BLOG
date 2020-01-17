@@ -15,6 +15,7 @@ import redis.clients.jedis.commands.JedisCommands
 import redis.clients.jedis.commands.MultiKeyCommands
 import java.lang.reflect.Method
 import java.lang.reflect.Proxy
+import java.util.concurrent.ConcurrentHashMap
 
 @Configuration
 @EnableConfigurationProperties(RedisProperties::class)
@@ -41,17 +42,25 @@ class RedisProperties {
     var maxWaitMillis: Long = 3000
 }
 
-fun JedisPool.wrappedJedisCommands(): JedisCommands = Proxy.newProxyInstance(
-    javaClass.classLoader,
-    arrayOf(JedisCommands::class.java),
-    WrappedJedis(resource)
-) as JedisCommands
+private val multiKeyCommandMaps: MutableMap<Jedis, Any> = ConcurrentHashMap()
 
-fun JedisPool.wrappedMultiKeyCommands(): MultiKeyCommands = Proxy.newProxyInstance(
-    javaClass.classLoader,
-    arrayOf(MultiKeyCommands::class.java),
-    WrappedJedis(resource)
-) as MultiKeyCommands
+private val jedisCommandMaps: MutableMap<Jedis, Any> = ConcurrentHashMap()
+
+fun JedisPool.wrappedJedisCommands(): JedisCommands = jedisCommandMaps.computeIfAbsent(resource) {
+    Proxy.newProxyInstance(
+        javaClass.classLoader,
+        arrayOf(JedisCommands::class.java),
+        WrappedJedis(resource)
+    )
+} as JedisCommands
+
+fun JedisPool.wrappedMultiKeyCommands(): MultiKeyCommands = multiKeyCommandMaps.computeIfAbsent(resource) {
+    Proxy.newProxyInstance(
+        javaClass.classLoader,
+        arrayOf(MultiKeyCommands::class.java),
+        WrappedJedis(it)
+    )
+} as MultiKeyCommands
 
 class WrappedJedis(private val jedis: Jedis) : DefaultInvocationHandler(targetObject = jedis) {
     @Throws(Exception::class)
