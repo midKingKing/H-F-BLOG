@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest
 class HtmlRouteController {
 
     @RequestMapping(value = ["**.html"])
-    fun renderToHtmlPage(request: HttpServletRequest): String {
+    fun routeToHtmlPage(request: HttpServletRequest): String {
         val matcher = pattern.matcher(request.requestURI)
         if (matcher.find()) {
             return matcher.group(1)
