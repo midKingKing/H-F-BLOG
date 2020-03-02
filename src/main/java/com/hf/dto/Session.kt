@@ -14,5 +14,4 @@ class Session {
     var createTime: Long? = null
     var expireTime: Long? = null
     var host: String? = null
-    var attr: String? = null
 }
