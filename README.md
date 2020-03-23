@@ -2,7 +2,8 @@
 
 ##  Road Map
 
-### replace java with kotlin
+### replace java by kotlin
+### replace mybatis by ktorm(https://ktorm.liuwj.me/zh-cn/) 
 ### add Dockerfile
 ### session move to redis
 ### account module
