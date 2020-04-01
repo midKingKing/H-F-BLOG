@@ -16,7 +16,7 @@ class ExceptionAdvice {
     fun exceptionHandler(exception: Exception, request: HttpServletRequest): Any {
         val message = exception.message
         log.error(message, exception)
-        return if (isAjaxRequest(request) || ServletFileUpload.isMultipartContent(request)) ResponseData(false).apply { this.message = message } else ModelAndView("500").apply { addObject("message", message) }
+        return if (isAjaxRequest(request) || ServletFileUpload.isMultipartContent(request)) ResponseData(success = false, message = message) else ModelAndView("500").apply { addObject("message", message) }
     }
 
     companion object: Logging() {

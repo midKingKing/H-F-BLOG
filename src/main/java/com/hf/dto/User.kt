@@ -1,12 +1,10 @@
 package com.hf.dto
 
-import javax.persistence.Id
+import me.liuwj.ktorm.entity.Entity
 
-class User {
-    @Id
-    var uid: Int? = null
-
-    var username: String? = null
-
-    var password: String? = null
+interface User : Entity<User> {
+    companion object: Entity.Factory<User>()
+    val id: Long
+    var username: String
+    var password: String
 }

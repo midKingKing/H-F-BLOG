@@ -1,5 +1,6 @@
 package com.hf.controllers
 
+import com.hf.exception.HfExceptions
 import com.hf.logging.Logging
 import com.hf.service.UserService
 import com.hf.util.SessionUtil
@@ -35,12 +36,13 @@ class LoginController @Autowired constructor(private val userService: UserServic
      */
     @RequestMapping(value = ["/login"], params = ["logout"], method = [RequestMethod.GET])
     fun logOut(request: HttpServletRequest): String {
-        val session = SessionUtil.session.get()
-        session.uuid?.apply { userService.logoutBySessionId(this) }
+        request.cookies.find { it.name == "hf-session" }?.value?.apply {
+            userService.logoutBySessionId(this)
+        }
         return VIEW_LOGIN //如果session为null，返回login
     }
 
-    companion object: Logging() {
+    companion object : Logging() {
         private const val VIEW_LOGIN = "/login"
         private const val VIEW_INDEX = "/index"
     }

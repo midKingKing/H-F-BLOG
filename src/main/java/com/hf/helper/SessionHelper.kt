@@ -1,9 +1,11 @@
 package com.hf.helper
 
 import com.hf.authorize.SESSION_KEEP_ALIVE_TIME
-import com.hf.dao.SessionMapper
+import com.hf.authorize.SESSION_KEY_PREFIX
+import com.hf.config.JedisClient
 import com.hf.dto.Session
-import com.hf.dto.User
+import com.hf.exception.HfExceptions
+import com.hf.util.JsonConverter
 import com.hf.util.SessionUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -11,29 +13,38 @@ import java.util.UUID
 import javax.servlet.http.Cookie
 
 @Component
-class SessionHelper @Autowired constructor(private val sessionMapper: SessionMapper) {
-    fun getBySessionId(sessionId: String): Session? = sessionMapper.selectByPrimaryKey(sessionId)
+class SessionHelper @Autowired constructor(private val jedisClient: JedisClient) {
+    fun findSession(sessionId: String): Session {
+        val sessionValue: String = jedisClient.get(SESSION_KEY_PREFIX + sessionId)
+                ?: throw HfExceptions.sessionExpiredException()
+        return JsonConverter.deserialize<Session>(sessionValue)!!
+    }
 
-    fun createSession(user: User): Int =
-        sessionMapper.insert(Session().apply {
-            uuid = UUID.randomUUID().toString().replace("-", "")
-            host = SessionUtil.request.get().remoteHost
-            username = user.username
-            expireTime = System.currentTimeMillis().also {
-                this.createTime = it
+    fun initSession(userId: Long, username: String): Session {
+        val session = Session().apply {
+            this.userId = userId
+            this.host = SessionUtil.request.get().remoteHost
+            this.username = username
+            this.expireTime = System.currentTimeMillis().also {
+                createTime = it
             } + SESSION_KEEP_ALIVE_TIME
-            SessionUtil.session.set(this)
-            SessionUtil.response.get()?.addCookie(Cookie("hf-session", uuid).apply {
-                isHttpOnly = true
-                this.maxAge = SESSION_KEEP_ALIVE_TIME.toInt() * 48
-            })
+        }
+        val sessionId = UUID.randomUUID().toString().replace("-", "")
+        jedisClient.psetex(SESSION_KEY_PREFIX + sessionId, SESSION_KEEP_ALIVE_TIME, JsonConverter.serialize(session))
+        SessionUtil.session.set(session)
+        SessionUtil.response.get()?.addCookie(Cookie("hf-session", sessionId).apply {
+            isHttpOnly = true
+            maxAge = SESSION_KEEP_ALIVE_TIME.toInt() * 48
         })
+        return session
+    }
 
+    fun destroySession(sessionId: String) = jedisClient.del(SESSION_KEY_PREFIX + sessionId)
 
-    fun deleteSession(sessionId: String): Int = sessionMapper.deleteByPrimaryKey(sessionId)
-
-    fun touchSession(session: Session): Int {
-        session.expireTime = System.currentTimeMillis() + 1800 * 1000
-        return sessionMapper.updateByPrimaryKey(session)
+    fun touchSession(sessionId: String) {
+        val session = findSession(sessionId)
+        session.expireTime = session.expireTime!! + SESSION_KEEP_ALIVE_TIME
+        jedisClient.psetex(SESSION_KEY_PREFIX + sessionId, SESSION_KEEP_ALIVE_TIME, JsonConverter.serialize(session))
     }
 }
+

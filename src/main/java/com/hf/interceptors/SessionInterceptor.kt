@@ -12,39 +12,33 @@ class SessionInterceptor(private val sessionHelper: SessionHelper) : HandlerInte
     override fun preHandle(request: HttpServletRequest?, response: HttpServletResponse?, handler: Any?): Boolean {
         SessionUtil.request.set(request)
         SessionUtil.response.set(response)
-        request?.cookies?.toList()?.find { it.name == "hf-session" }?.let {
-            val session = sessionHelper.getBySessionId(it.value)
-            if (session != null) {
-                if (session.expireTime ?: 0 > System.currentTimeMillis()) {
-                    sessionHelper.touchSession(session)
-                    SessionUtil.session.set(session)
-                } else {
-                    session.uuid?.run {
-                        sessionHelper.deleteSession(this)
-                    }
-                }
+        request?.cookies?.find { it.name == "hf-session" }?.let {
+            val session = sessionHelper.findSession(it.value)
+            if (session.expireTime!! > System.currentTimeMillis()) {
+                sessionHelper.touchSession(it.value)
+                SessionUtil.session.set(session)
             }
         }
         return true
     }
 
     override fun postHandle(
-        request: HttpServletRequest?,
-        response: HttpServletResponse?,
-        handler: Any?,
-        modelAndView: ModelAndView?
+            request: HttpServletRequest?,
+            response: HttpServletResponse?,
+            handler: Any?,
+            modelAndView: ModelAndView?
     ) {
         modelAndView?.model?.set("user", User().apply {
-            username = SessionUtil.session.get()?.username
+            username = SessionUtil.session.get()?.username ?: "unLogin"
         })
         super.postHandle(request, response, handler, modelAndView)
     }
 
     override fun afterCompletion(
-        request: HttpServletRequest?,
-        response: HttpServletResponse?,
-        handler: Any?,
-        ex: Exception?
+            request: HttpServletRequest?,
+            response: HttpServletResponse?,
+            handler: Any?,
+            ex: Exception?
     ) {
         SessionUtil.session.remove()
     }

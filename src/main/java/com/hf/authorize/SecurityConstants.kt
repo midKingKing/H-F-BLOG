@@ -4,6 +4,8 @@ package com.hf.authorize
 
 const val SESSION_KEEP_ALIVE_TIME = 1800 * 1000L
 
+const val SESSION_KEY_PREFIX = "hf:session:"
+
 //TODO hard code is not a good idea
 object GitHubApp {
     private const val client_id = "cb48d9968f50fdcd754d"

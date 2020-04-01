@@ -64,7 +64,7 @@ fun JedisPool.wrappedMultiKeyCommands(): MultiKeyCommands = multiKeyCommandMaps.
 
 class WrappedJedis(private val jedis: Jedis) : DefaultInvocationHandler(targetObject = jedis) {
     @Throws(Exception::class)
-    override fun invoke(proxy: Any, method: Method, args: Array<out Any>?): Any {
+    override fun invoke(proxy: Any, method: Method, args: Array<out Any>?): Any? {
         return ProxyUtils.safeMethodInvoke(jedis, method, args).apply {
             if (method.declaringClass == JedisCommands::class.java || method.declaringClass == MultiKeyCommands::class.java) {
                 jedis.close()

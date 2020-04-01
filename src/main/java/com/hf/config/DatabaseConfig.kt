@@ -1,6 +1,6 @@
 package com.hf.config
 
-import com.alibaba.druid.pool.DruidDataSource
+import com.zaxxer.hikari.HikariDataSource
 import org.springframework.boot.autoconfigure.AutoConfigureBefore
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
@@ -9,36 +9,34 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.DependsOn
 import javax.sql.DataSource
 
 @Configuration
-@EnableConfigurationProperties(DruidProperties::class)
-@ConditionalOnClass(DruidDataSource::class)
-@ConditionalOnProperty(prefix = "druid", name = ["url"])
+@EnableConfigurationProperties(DatabaseConfig::class)
+@ConditionalOnClass(DataSource::class)
+@ConditionalOnProperty(prefix = "database", name = ["url"])
 @AutoConfigureBefore(DataSourceAutoConfiguration::class)
-open class DruidConfiguration {
+open class DatabaseConfiguration {
     @Bean
-    open fun dataSource(properties: DruidProperties): DataSource {
-        return DruidDataSource().apply {
-            url = properties.url
+    open fun dataSource(properties: DatabaseConfig): DataSource {
+        return HikariDataSource().apply {
+            jdbcUrl = properties.url
             username = properties.username
             password = properties.password
-            isTestOnBorrow = properties.testOnBorrow
-            initialSize = properties.initialSize
-            minIdle = properties.minIdle
-            maxActive = properties.maxActive
-            init()
+            minimumIdle = 5
+            maximumPoolSize = 10
+            connectionTimeout = 30000
+            addDataSourceProperty("cachePrepStmts", "true");
+            addDataSourceProperty("prepStmtCacheSize", "250");
+            addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
         }
     }
 }
 
-@ConfigurationProperties(prefix = "druid")
-class DruidProperties {
+@ConfigurationProperties(prefix = "database")
+class DatabaseConfig {
     var url: String? = null
     var username: String? = null
     var password: String? = null
-    var maxActive: Int = 0
-    var minIdle: Int = 0
-    var initialSize: Int = 0
-    var testOnBorrow: Boolean = false
 }
