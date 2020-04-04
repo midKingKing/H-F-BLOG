@@ -2,7 +2,7 @@ package com.hf.helper
 
 import com.hf.authorize.SESSION_KEEP_ALIVE_TIME
 import com.hf.authorize.SESSION_KEY_PREFIX
-import com.hf.config.JedisClient
+import com.hf.config.RedisService
 import com.hf.dto.Session
 import com.hf.exception.HfExceptions
 import com.hf.util.JsonConverter
@@ -13,9 +13,9 @@ import java.util.UUID
 import javax.servlet.http.Cookie
 
 @Component
-class SessionHelper @Autowired constructor(private val jedisClient: JedisClient) {
+class SessionHelper @Autowired constructor(private val redisService: RedisService) {
     fun findSession(sessionId: String): Session {
-        val sessionValue: String = jedisClient.get(SESSION_KEY_PREFIX + sessionId)
+        val sessionValue: String = redisService.get(SESSION_KEY_PREFIX + sessionId)
                 ?: throw HfExceptions.sessionExpiredException()
         return JsonConverter.deserialize<Session>(sessionValue)!!
     }
@@ -30,7 +30,7 @@ class SessionHelper @Autowired constructor(private val jedisClient: JedisClient)
             } + SESSION_KEEP_ALIVE_TIME
         }
         val sessionId = UUID.randomUUID().toString().replace("-", "")
-        jedisClient.psetex(SESSION_KEY_PREFIX + sessionId, SESSION_KEEP_ALIVE_TIME, JsonConverter.serialize(session))
+        redisService.psetex(SESSION_KEY_PREFIX + sessionId, SESSION_KEEP_ALIVE_TIME, JsonConverter.serialize(session)!!)
         SessionUtil.session.set(session)
         SessionUtil.response.get()?.addCookie(Cookie("hf-session", sessionId).apply {
             isHttpOnly = true
@@ -39,12 +39,12 @@ class SessionHelper @Autowired constructor(private val jedisClient: JedisClient)
         return session
     }
 
-    fun destroySession(sessionId: String) = jedisClient.del(SESSION_KEY_PREFIX + sessionId)
+    fun destroySession(sessionId: String) = redisService.del(SESSION_KEY_PREFIX + sessionId)
 
     fun touchSession(sessionId: String) {
         val session = findSession(sessionId)
         session.expireTime = session.expireTime!! + SESSION_KEEP_ALIVE_TIME
-        jedisClient.psetex(SESSION_KEY_PREFIX + sessionId, SESSION_KEEP_ALIVE_TIME, JsonConverter.serialize(session))
+        redisService.psetex(SESSION_KEY_PREFIX + sessionId, SESSION_KEEP_ALIVE_TIME, JsonConverter.serialize(session)!!)
     }
 }
 

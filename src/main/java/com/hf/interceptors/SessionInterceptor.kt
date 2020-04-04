@@ -1,8 +1,10 @@
 package com.hf.interceptors
 
+import com.hf.authorize.HfSession
 import com.hf.dto.User
 import com.hf.helper.SessionHelper
 import com.hf.util.SessionUtil
+import org.springframework.web.method.HandlerMethod
 import org.springframework.web.servlet.ModelAndView
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter
 import javax.servlet.http.HttpServletRequest
@@ -12,11 +14,13 @@ class SessionInterceptor(private val sessionHelper: SessionHelper) : HandlerInte
     override fun preHandle(request: HttpServletRequest?, response: HttpServletResponse?, handler: Any?): Boolean {
         SessionUtil.request.set(request)
         SessionUtil.response.set(response)
-        request?.cookies?.find { it.name == "hf-session" }?.let {
-            val session = sessionHelper.findSession(it.value)
-            if (session.expireTime!! > System.currentTimeMillis()) {
-                sessionHelper.touchSession(it.value)
-                SessionUtil.session.set(session)
+        if (handler is HandlerMethod && handler.hasMethodAnnotation(HfSession::class.java)) {
+            request?.cookies?.find { it.name == "hf-session" }?.let {
+                val session = sessionHelper.findSession(it.value)
+                if (session.expireTime!! > System.currentTimeMillis()) {
+                    sessionHelper.touchSession(it.value)
+                    SessionUtil.session.set(session)
+                }
             }
         }
         return true
@@ -41,5 +45,7 @@ class SessionInterceptor(private val sessionHelper: SessionHelper) : HandlerInte
             ex: Exception?
     ) {
         SessionUtil.session.remove()
+        SessionUtil.request.remove()
+        SessionUtil.response.remove()
     }
 }
