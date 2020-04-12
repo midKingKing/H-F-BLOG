@@ -1,9 +1,8 @@
 package com.hf.controllers
 
-import com.hf.exception.HfExceptions
+import com.hf.authorize.GitHubApp
 import com.hf.logging.Logging
 import com.hf.service.UserService
-import com.hf.util.SessionUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping
@@ -46,4 +45,22 @@ class LoginController @Autowired constructor(private val userService: UserServic
         private const val VIEW_LOGIN = "/login"
         private const val VIEW_INDEX = "/index"
     }
+
+    /**
+     * github第三方登陆获取code
+     */
+    @RequestMapping(value = ["/third/app/github"], method = [RequestMethod.GET])
+    fun githubLogin(): String {
+        return "redirect:"+GitHubApp.CILENT_CODE_URL+GitHubApp.CLIENT_ID
+    }
+
+    /**
+     * github第三方登陆回调地址
+     */
+    @RequestMapping(value = ["/third/app/github/callback"], method = [RequestMethod.GET])
+    fun githubLoginCallback(request: HttpServletRequest, code: String): String {
+        userService.githubLogin(code)
+        return "redirect:$VIEW_INDEX.html"
+    }
+
 }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam
 open class ThirdAppController {
     @GetMapping
     fun redirectToApp(@PathVariable appType: String): String = when (appType) {
-        "github" -> "redirect:${GitHubApp.request_url}"
+        "github" -> "redirect:${GitHubApp.REQUEST_URL}"
         else -> throw HfExceptions.unsupportedAppType()
     }
 
