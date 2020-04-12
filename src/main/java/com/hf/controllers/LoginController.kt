@@ -1,5 +1,6 @@
 package com.hf.controllers
 
+import com.hf.authorize.GitHubApp
 import com.hf.logging.Logging
 import com.hf.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
@@ -43,8 +44,6 @@ class LoginController @Autowired constructor(private val userService: UserServic
     companion object : Logging() {
         private const val VIEW_LOGIN = "/login"
         private const val VIEW_INDEX = "/index"
-        private const val CILENT_CODE_URL = "https://github.com/login/oauth/authorize?client_id="
-        private const val CILENT_ID = "72ea7f69f048a9a2485e"
     }
 
     /**
@@ -52,7 +51,7 @@ class LoginController @Autowired constructor(private val userService: UserServic
      */
     @RequestMapping(value = ["/third/app/github"], method = [RequestMethod.GET])
     fun githubLogin(): String {
-        return "redirect:$CILENT_CODE_URL$CILENT_ID"
+        return "redirect:"+GitHubApp.CILENT_CODE_URL+GitHubApp.CLIENT_ID
     }
 
     /**

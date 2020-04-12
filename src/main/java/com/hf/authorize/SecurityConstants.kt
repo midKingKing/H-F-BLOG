@@ -8,17 +8,21 @@ const val SESSION_KEY_PREFIX = "hf:session:"
 
 //TODO hard code is not a good idea
 object GitHubApp {
-    private const val client_id = "cb48d9968f50fdcd754d"
+    const val CLIENT_ID = "72ea7f69f048a9a2485e"
 
-    private const val client_secret = "1922eb3762108a84831729f273d9e1c6a6fe7519"
+    const val CLIENT_SECRET = "22592362c6bbb055a357e66f3b0ee83ef7472ea6"
 
-    private const val callback_url = "http://localhost:9090/third/app/github/callback"
+    private const val CALLBACK_URL = "http://localhost:9090/third/app/github/callback"
 
-    private const val redirect_url = "http://localhost:9090/index.html"
+    private const val REDIRECT_URL = "http://localhost:9090/index.html"
 
-    const val request_url = "https://github.com/login/oauth/authorize?client_id=$client_id&redirect_url=$callback_url&scope=user"
+    const val TOKEN_URL = "https://github.com/login/oauth/access_token"
 
-    const val token_url = "https://github.com/login/oauth/access_token?client_id=$client_id&redirect_url=$redirect_url&client_secret=$client_secret&code=%s"
+    const val USER_URL = "https://api.github.com/user?access_token="
 
-    const val user_info_url = "https://api.github.com/user"
+    const val REQUEST_URL = "https://github.com/login/oauth/authorize?client_id=$CLIENT_ID&redirect_url=$CALLBACK_URL&scope=user"
+
+    const val USER_INFO_URL = "https://api.github.com/user"
+
+    const val CILENT_CODE_URL = "https://github.com/login/oauth/authorize?client_id="
 }

@@ -15,5 +15,9 @@ class HfExceptions {
 
         @Throws(RuntimeException::class)
         fun unsupportedAppType() = RuntimeException("unsupported app type")
+
+        @Throws(RuntimeException::class)
+        fun thirdAppUserNotFound() = RuntimeException("third app user not found")
+
     }
 }
