@@ -6,6 +6,10 @@ const val SESSION_KEEP_ALIVE_TIME = 1800 * 1000L
 
 const val SESSION_KEY_PREFIX = "hf:session:"
 
+const val SESSION_NAME = "hf-session"
+
+const val VIEW_INDEX = "/index.html"
+
 //TODO hard code is not a good idea
 object GitHubApp {
     const val CLIENT_ID = "72ea7f69f048a9a2485e"

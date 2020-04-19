@@ -8,5 +8,4 @@ import me.liuwj.ktorm.schema.varchar
 object Users : Table<User>("user") {
     val id by long("uid").primaryKey().bindTo { it.id }
     val username by varchar("username").bindTo { it.username }
-    val password by varchar("password").bindTo { it.password }
 }

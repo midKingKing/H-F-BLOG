@@ -2,6 +2,7 @@ package com.hf.helper
 
 import com.hf.authorize.SESSION_KEEP_ALIVE_TIME
 import com.hf.authorize.SESSION_KEY_PREFIX
+import com.hf.authorize.SESSION_NAME
 import com.hf.config.RedisService
 import com.hf.dto.Session
 import com.hf.exception.HfExceptions
@@ -32,7 +33,7 @@ class SessionHelper @Autowired constructor(private val redisService: RedisServic
         val sessionId = UUID.randomUUID().toString().replace("-", "")
         redisService.psetex(SESSION_KEY_PREFIX + sessionId, SESSION_KEEP_ALIVE_TIME, JsonConverter.serialize(session)!!)
         SessionUtil.session.set(session)
-        SessionUtil.response.get()?.addCookie(Cookie("hf-session", sessionId).apply {
+        SessionUtil.response.get()?.addCookie(Cookie(SESSION_NAME, sessionId).apply {
             isHttpOnly = true
             maxAge = SESSION_KEEP_ALIVE_TIME.toInt() * 48
         })

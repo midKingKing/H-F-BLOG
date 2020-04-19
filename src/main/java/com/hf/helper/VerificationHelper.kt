@@ -5,6 +5,7 @@ import org.apache.tomcat.util.security.MD5Encoder
 import java.security.MessageDigest
 import kotlin.experimental.and
 
+@Deprecated(message = "useless")
 class VerificationHelper {
     companion object {
         private const val salt: String = "HF_SALT_996_ICU"

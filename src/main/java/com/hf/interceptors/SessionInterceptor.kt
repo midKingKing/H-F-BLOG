@@ -1,6 +1,7 @@
 package com.hf.interceptors
 
 import com.hf.authorize.HfSession
+import com.hf.authorize.SESSION_NAME
 import com.hf.dto.User
 import com.hf.helper.SessionHelper
 import com.hf.util.SessionUtil
@@ -15,7 +16,7 @@ class SessionInterceptor(private val sessionHelper: SessionHelper) : HandlerInte
         SessionUtil.request.set(request)
         SessionUtil.response.set(response)
         if (handler is HandlerMethod && handler.hasMethodAnnotation(HfSession::class.java)) {
-            request?.cookies?.find { it.name == "hf-session" }?.let {
+            request?.cookies?.find { it.name == SESSION_NAME }?.let {
                 val session = sessionHelper.findSession(it.value)
                 if (session.expireTime!! > System.currentTimeMillis()) {
                     sessionHelper.touchSession(it.value)
